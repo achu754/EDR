@@ -141,7 +141,9 @@ impl PersistenceCollector {
                     event_with_id.id = Some(id);
 
                     // Broadcast event
-                    let _ = self.event_tx.send(CollectorEvent::Persistence(event_with_id));
+                    let _ = self
+                        .event_tx
+                        .send(CollectorEvent::Persistence(event_with_id));
 
                     self.known_registry_values.insert(key, data);
                 }
@@ -188,7 +190,9 @@ impl PersistenceCollector {
                     event_with_id.id = Some(id);
 
                     // Broadcast event
-                    let _ = self.event_tx.send(CollectorEvent::Persistence(event_with_id));
+                    let _ = self
+                        .event_tx
+                        .send(CollectorEvent::Persistence(event_with_id));
 
                     self.known_startup_files.insert(file, hash);
                 }
@@ -208,10 +212,8 @@ impl PersistenceCollector {
             if let Ok(entries) = fs::read_dir(users_dir) {
                 for entry in entries.flatten() {
                     if entry.path().is_dir() {
-                        let expanded = pattern.replace(
-                            "C:\\Users\\*",
-                            entry.path().to_str().unwrap_or(""),
-                        );
+                        let expanded =
+                            pattern.replace("C:\\Users\\*", entry.path().to_str().unwrap_or(""));
                         let _ = self.check_startup_folder(&expanded).await;
                     }
                 }

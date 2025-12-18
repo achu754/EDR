@@ -1,6 +1,6 @@
-use edr_agent::hunts::rules;
-use edr_agent::database::ProcessEvent;
 use chrono::Utc;
+use edr_agent::database::ProcessEvent;
+use edr_agent::hunts::rules;
 
 #[test]
 fn test_suspicious_powershell_multiple_indicators() {

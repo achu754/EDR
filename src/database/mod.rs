@@ -140,7 +140,10 @@ impl Database {
         Ok(id)
     }
 
-    pub async fn get_process_events_since(&self, since: DateTime<Utc>) -> Result<Vec<ProcessEvent>> {
+    pub async fn get_process_events_since(
+        &self,
+        since: DateTime<Utc>,
+    ) -> Result<Vec<ProcessEvent>> {
         let events = sqlx::query(
             r#"
             SELECT id, timestamp, pid, parent_pid, image_path, command_line, username
@@ -167,7 +170,10 @@ impl Database {
         Ok(events)
     }
 
-    pub async fn get_network_events_since(&self, since: DateTime<Utc>) -> Result<Vec<NetworkEvent>> {
+    pub async fn get_network_events_since(
+        &self,
+        since: DateTime<Utc>,
+    ) -> Result<Vec<NetworkEvent>> {
         let events = sqlx::query(
             r#"
             SELECT id, timestamp, pid, local_addr, local_port, remote_addr, remote_port, protocol, state
@@ -196,7 +202,10 @@ impl Database {
         Ok(events)
     }
 
-    pub async fn get_persistence_events_since(&self, since: DateTime<Utc>) -> Result<Vec<PersistenceEvent>> {
+    pub async fn get_persistence_events_since(
+        &self,
+        since: DateTime<Utc>,
+    ) -> Result<Vec<PersistenceEvent>> {
         let events = sqlx::query(
             r#"
             SELECT id, timestamp, persistence_type, location, value_name, value_data

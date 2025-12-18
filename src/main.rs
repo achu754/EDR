@@ -37,9 +37,8 @@ async fn main() -> Result<()> {
 fn init_tracing(config: &config::Config) {
     use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-    let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| {
-        EnvFilter::new(format!("edr_agent={}", config.log_level))
-    });
+    let filter = EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| EnvFilter::new(format!("edr_agent={}", config.log_level)));
 
     tracing_subscriber::registry()
         .with(filter)

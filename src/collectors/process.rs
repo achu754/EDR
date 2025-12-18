@@ -63,8 +63,8 @@ impl ProcessCollector {
         let com_con = COMLibrary::new()?;
         let wmi_con = WMIConnection::new(com_con)?;
 
-        let processes: Vec<HashMap<String, wmi::Variant>> = wmi_con
-            .raw_query("SELECT ProcessId, Name FROM Win32_Process")?;
+        let processes: Vec<HashMap<String, wmi::Variant>> =
+            wmi_con.raw_query("SELECT ProcessId, Name FROM Win32_Process")?;
 
         for process in processes {
             if let (Some(wmi::Variant::UI4(pid)), Some(wmi::Variant::String(name))) =
@@ -118,7 +118,9 @@ impl ProcessCollector {
             };
 
             // Get username (simplified - in production, would use more robust method)
-            let username = self.get_process_username(pid).unwrap_or_else(|| String::from("Unknown"));
+            let username = self
+                .get_process_username(pid)
+                .unwrap_or_else(|| String::from("Unknown"));
 
             let event = ProcessEvent {
                 id: None,

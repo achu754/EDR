@@ -58,11 +58,10 @@ pub struct HuntsConfig {
 
 impl Config {
     pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let content = fs::read_to_string(path.as_ref())
-            .context("Failed to read config file")?;
+        let content = fs::read_to_string(path.as_ref()).context("Failed to read config file")?;
 
-        let config: Config = serde_yaml::from_str(&content)
-            .context("Failed to parse config YAML")?;
+        let config: Config =
+            serde_yaml::from_str(&content).context("Failed to parse config YAML")?;
 
         Ok(config)
     }

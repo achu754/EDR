@@ -90,9 +90,11 @@ pub async fn run_migrations(pool: &SqlitePool) -> Result<()> {
         .execute(pool)
         .await?;
 
-    sqlx::query("CREATE INDEX IF NOT EXISTS idx_persistence_timestamp ON persistence_events(timestamp)")
-        .execute(pool)
-        .await?;
+    sqlx::query(
+        "CREATE INDEX IF NOT EXISTS idx_persistence_timestamp ON persistence_events(timestamp)",
+    )
+    .execute(pool)
+    .await?;
 
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_hunt_timestamp ON hunt_matches(timestamp)")
         .execute(pool)

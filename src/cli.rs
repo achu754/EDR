@@ -164,13 +164,40 @@ pub async fn show_status(config: Config) -> Result<()> {
     println!("  Hunt matches:       {}", hunt_count);
     println!();
     println!("Collectors:");
-    println!("  Process:     {}", if config.collectors.process.enabled { "enabled" } else { "disabled" });
-    println!("  Network:     {}", if config.collectors.network.enabled { "enabled" } else { "disabled" });
-    println!("  Persistence: {}", if config.collectors.persistence.enabled { "enabled" } else { "disabled" });
+    println!(
+        "  Process:     {}",
+        if config.collectors.process.enabled {
+            "enabled"
+        } else {
+            "disabled"
+        }
+    );
+    println!(
+        "  Network:     {}",
+        if config.collectors.network.enabled {
+            "enabled"
+        } else {
+            "disabled"
+        }
+    );
+    println!(
+        "  Persistence: {}",
+        if config.collectors.persistence.enabled {
+            "enabled"
+        } else {
+            "disabled"
+        }
+    );
     println!();
     println!("Hunts:");
-    println!("  Enabled:     {}", if config.hunts.enabled { "yes" } else { "no" });
-    println!("  Auto-hunt:   {}", if config.hunts.auto_hunt { "yes" } else { "no" });
+    println!(
+        "  Enabled:     {}",
+        if config.hunts.enabled { "yes" } else { "no" }
+    );
+    println!(
+        "  Auto-hunt:   {}",
+        if config.hunts.auto_hunt { "yes" } else { "no" }
+    );
     println!("═══════════════════════════════════════");
 
     Ok(())
