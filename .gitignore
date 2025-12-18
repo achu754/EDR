@@ -1,0 +1,43 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# EDR Agent data
+edr_events.db
+edr_events.db-shm
+edr_events.db-wal
+events.jsonl
+*.jsonl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Backup files
+*.backup
+*.bak
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test coverage
+cobertura.xml
+tarpaulin-report.html
+*.profraw
+*.profdata
