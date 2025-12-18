@@ -1,12 +1,7 @@
-mod cli;
-mod collectors;
-mod config;
-mod database;
-mod hunts;
-
 use anyhow::Result;
-use cli::{Cli, Commands};
 use clap::Parser;
+use edr_agent::cli::{self, Cli, Commands};
+use edr_agent::config;
 use tracing::info;
 
 #[tokio::main]

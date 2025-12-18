@@ -1,6 +1,5 @@
 use crate::database::{HuntMatch, ProcessEvent};
 use chrono::Utc;
-use regex::Regex;
 
 /// Check for suspicious PowerShell usage patterns
 pub fn check_suspicious_powershell(event: &ProcessEvent) -> Option<HuntMatch> {
