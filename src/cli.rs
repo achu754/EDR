@@ -10,7 +10,7 @@ use std::io::Write as IoWrite;
 use std::sync::Arc;
 use tokio::signal;
 use tokio::sync::broadcast;
-use tracing::{error, info, warn};
+use tracing::{error, info};
 
 #[derive(Parser)]
 #[command(name = "agent")]

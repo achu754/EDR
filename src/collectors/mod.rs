@@ -8,6 +8,7 @@ use anyhow::Result;
 use std::sync::Arc;
 use tokio::sync::broadcast;
 
+#[derive(Clone)]
 pub enum CollectorEvent {
     Process(crate::database::ProcessEvent),
     Network(crate::database::NetworkEvent),

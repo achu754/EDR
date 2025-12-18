@@ -159,7 +159,7 @@ impl PersistenceCollector {
     async fn check_startup_folder(&mut self, folder_path: &str) -> Result<()> {
         // Handle wildcard in path
         if folder_path.contains('*') {
-            return self.check_wildcard_path(folder_path).await;
+            return Box::pin(self.check_wildcard_path(folder_path)).await;
         }
 
         let files = self.read_startup_folder(folder_path)?;
@@ -214,7 +214,8 @@ impl PersistenceCollector {
                     if entry.path().is_dir() {
                         let expanded =
                             pattern.replace("C:\\Users\\*", entry.path().to_str().unwrap_or(""));
-                        let _ = self.check_startup_folder(&expanded).await;
+                        // Use Box::pin to avoid infinite recursion
+                        let _ = Box::pin(self.check_startup_folder(&expanded)).await;
                     }
                 }
             }
@@ -241,7 +242,7 @@ impl PersistenceCollector {
 
             if RegQueryInfoKeyW(
                 key,
-                None,
+                windows::core::PWSTR::null(),
                 None,
                 None,
                 None,
@@ -263,7 +264,7 @@ impl PersistenceCollector {
                 let mut name_len = name_buf.len() as u32;
                 let mut data_buf = vec![0u8; max_value_len as usize];
                 let mut data_len = data_buf.len() as u32;
-                let mut value_type: REG_VALUE_TYPE = REG_VALUE_TYPE::default();
+                let mut value_type: u32 = 0;
 
                 if RegEnumValueW(
                     key,
@@ -287,7 +288,7 @@ impl PersistenceCollector {
         Ok(values)
     }
 
-    fn parse_registry_path(&self, reg_path: &str) -> Result<(HKEY, &str)> {
+    fn parse_registry_path<'a>(&self, reg_path: &'a str) -> Result<(HKEY, &'a str)> {
         if let Some(subkey) = reg_path.strip_prefix("HKLM\\") {
             Ok((HKEY_LOCAL_MACHINE, subkey))
         } else if let Some(subkey) = reg_path.strip_prefix("HKCU\\") {

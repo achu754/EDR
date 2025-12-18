@@ -79,12 +79,14 @@ impl ProcessCollector {
     }
 
     async fn check_for_new_processes(&mut self) -> Result<()> {
-        let com_con = COMLibrary::new()?;
-        let wmi_con = WMIConnection::new(com_con)?;
-
-        let processes: Vec<HashMap<String, wmi::Variant>> = wmi_con.raw_query(
-            "SELECT ProcessId, ParentProcessId, Name, ExecutablePath, CommandLine FROM Win32_Process",
-        )?;
+        // Collect process data (must complete before any async operations)
+        let processes = {
+            let com_con = COMLibrary::new()?;
+            let wmi_con = WMIConnection::new(com_con)?;
+            wmi_con.raw_query::<HashMap<String, wmi::Variant>>(
+                "SELECT ProcessId, ParentProcessId, Name, ExecutablePath, CommandLine FROM Win32_Process",
+            )?
+        }; // WMI connection dropped here
 
         for process in processes {
             let pid = match process.get("ProcessId") {

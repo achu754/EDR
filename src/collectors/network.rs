@@ -5,7 +5,7 @@ use anyhow::Result;
 use chrono::Utc;
 use std::collections::HashSet;
 use std::mem;
-use std::net::{Ipv4Addr, Ipv6Addr};
+use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tokio::sync::broadcast;
 use tokio::time::{interval, Duration};
@@ -14,7 +14,7 @@ use windows::Win32::NetworkManagement::IpHelper::{
     GetExtendedTcpTable, GetExtendedUdpTable, MIB_TCPROW_OWNER_PID, MIB_TCPTABLE_OWNER_PID,
     MIB_UDPROW_OWNER_PID, MIB_UDPTABLE_OWNER_PID, TCP_TABLE_OWNER_PID_ALL, UDP_TABLE_OWNER_PID,
 };
-use windows::Win32::Networking::WinSock::{AF_INET, AF_INET6};
+use windows::Win32::Networking::WinSock::AF_INET;
 
 pub struct NetworkCollector {
     config: Config,
@@ -91,14 +91,18 @@ impl NetworkCollector {
             let mut buffer = vec![0u8; size as usize];
 
             // Get TCP table
-            GetExtendedTcpTable(
+            let result = GetExtendedTcpTable(
                 Some(buffer.as_mut_ptr() as *mut _),
                 &mut size,
                 false,
                 AF_INET.0 as u32,
                 TCP_TABLE_OWNER_PID_ALL,
                 0,
-            )?;
+            );
+
+            if result != 0 {
+                return Ok(()); // Silently skip on error
+            }
 
             let table = buffer.as_ptr() as *const MIB_TCPTABLE_OWNER_PID;
             let num_entries = (*table).dwNumEntries as usize;
@@ -186,14 +190,18 @@ impl NetworkCollector {
             let mut buffer = vec![0u8; size as usize];
 
             // Get UDP table
-            GetExtendedUdpTable(
+            let result = GetExtendedUdpTable(
                 Some(buffer.as_mut_ptr() as *mut _),
                 &mut size,
                 false,
                 AF_INET.0 as u32,
                 UDP_TABLE_OWNER_PID,
                 0,
-            )?;
+            );
+
+            if result != 0 {
+                return Ok(()); // Silently skip on error
+            }
 
             let table = buffer.as_ptr() as *const MIB_UDPTABLE_OWNER_PID;
             let num_entries = (*table).dwNumEntries as usize;
